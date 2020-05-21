@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import NetInfo from "@react-native-community/netinfo";
 import LinearGradient from "react-native-linear-gradient";
 import {DARK_PRIMARY_COLOR, PRIMARY_COLOR} from "../constants/colors";
+import {getI, register} from "../lib/API";
 
 const mapStateToProps = state => ({
     //auth: state.auth
@@ -31,6 +32,8 @@ class LoadingContainer extends React.Component {
                 this.props.navigation.navigate('MainStack', {screen: ''})
             })
         }*/
+        getI()
+        //register('Kodonomo', 'Koko donomo', '123456Q', 'kukareku@mail.ru')
     }
 
     handleConnectivityChange(connectionInfo) {

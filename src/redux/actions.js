@@ -1,3 +1,3 @@
 import {createAction} from "redux-actions";
 
-export const goForward = createAction('nav/forward', data => data);
+export const setData = createAction('set/data', data => data);

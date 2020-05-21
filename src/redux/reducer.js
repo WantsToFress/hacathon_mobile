@@ -4,9 +4,8 @@ import initState from '../constants/initState'
 import {mergeRight} from 'ramda';
 
 const RootReducer = createReducer(initState, {
-    //nav
-    [actions.goForward]: (state, action) => {
-        return mergeRight(state, { history: action.payload })
+    [actions.setData]: (state, action) => {
+        return mergeRight(state, action.payload)
     },
 });
 
