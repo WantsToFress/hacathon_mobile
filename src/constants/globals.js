@@ -1,1 +1,1 @@
-export const API_URL = 'http://84.201.144.24/api'
+export const API_URL = 'http://hackathon.jrosn.space/api'

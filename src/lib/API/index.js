@@ -63,7 +63,7 @@ const createUrl = (endpoint, args) => {
         queryString = `?${query.join('&')}`;
     }
     /* Trim right slash if needed */
-    return `${API_URL}${trimSlash(endpoint)}/${queryString}`;
+    return `${API_URL}${trimSlash(endpoint)}${(queryString ? '/' : '') + queryString}`;
 }
 
 const handleRefresh = async () => {
@@ -149,7 +149,7 @@ export const register = (login, full_name, password, email) => {
 }
 
 export const getEquipment = () => {
-
+    call('GET', '/equipment', null, null).then(res => alert(JSON.stringify(res)))
 }
 
 export const getI = () => {
