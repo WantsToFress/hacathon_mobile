@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import NetInfo from "@react-native-community/netinfo";
 import LinearGradient from "react-native-linear-gradient";
 import {DARK_PRIMARY_COLOR, PRIMARY_COLOR} from "../constants/colors";
-import {getI, register} from "../lib/API";
+import {getEquipment, getI, register} from "../lib/API";
 
 const mapStateToProps = state => ({
     //auth: state.auth
@@ -26,13 +26,14 @@ class LoadingContainer extends React.Component {
 
     componentDidMount(): void {
        /* if (!this.props.auth || !this.props.auth.user || !this.props.auth.user.id) {
-            this.props.navigation.navigate('LoadStack', {screen: 'logIn'})
+            this.props.navigation.navigate('LoginStack', {screen: 'logIn'})
         } else {
             this.props.getUserProfile(this.props.auth.user.id, () => {
                 this.props.navigation.navigate('MainStack', {screen: ''})
             })
         }*/
-        getI()
+        setTimeout(() => this.props.navigation.replace('LoginStack'), 1500)
+        //getEquipment()
         //register('Kodonomo', 'Koko donomo', '123456Q', 'kukareku@mail.ru')
     }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import {persistor, store} from "./redux/store";
 import {connect, Provider} from "react-redux";
 import {PersistGate} from 'redux-persist/integration/react';
-import LoadStack from './screens/LoadStack'
+import LoginStack from './screens/LoginStack'
 import MainStack from './screens/MainStack'
 import LoadingContainer from "./screens/loadingContainer";
 import {NavigationContainer} from '@react-navigation/native';
@@ -19,7 +19,7 @@ class AppContainer extends React.Component {
                     <Stack.Navigator initialRouteName="LoadingContainer">
                         <Stack.Screen name="LoadingContainer" component={LoadingContainer}
                                       options={{headerShown: false}}/>
-                        <Stack.Screen name="LoadStack" component={LoadStack}
+                        <Stack.Screen name="LoginStack" component={LoginStack}
                                         options={{headerShown: false}}/>
                         <Stack.Screen name="MainStack" component={MainStack}
                                       options={{headerShown: false}}/>
