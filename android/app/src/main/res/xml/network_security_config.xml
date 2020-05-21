@@ -5,4 +5,9 @@
             <certificates src="system" />
         </trust-anchors>
     </base-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">http://84.201.144.24/api</domain>
+        <domain includeSubdomains="true">http://hackathon.jrosn.space</domain>
+        <domain includeSubdomains="true">http://hackathon.jrosn.space:8888/</domain>
+    </domain-config>
 </network-security-config>
