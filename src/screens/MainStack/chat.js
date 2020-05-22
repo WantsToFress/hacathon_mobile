@@ -5,6 +5,7 @@ import LinearGradient from "react-native-linear-gradient";
 import {DARK_PRIMARY_COLOR, PRIMARY_COLOR} from "../../constants/colors";
 import Icon from 'react-native-vector-icons/Entypo'
 import moment from "moment";
+import {findNarrows} from "../../lib/API/chat_bot";
 
 const mapStateToProps = state => ({
     //auth: state.auth
@@ -22,34 +23,18 @@ class LoadingContainer extends React.Component {
         super();
 
         this.state = {
-            data: [
-                {message: 'qwe'},
-                {message: 'qwe'},
-                {message: 'qwe'},
-                {message: 'qwe'},
-                {message: 'qwe'},
-                {message: 'qwe'},
-                {message: 'qwe'},
-                {message: 'qwe'},
-                {message: 'qwe'},
-                {message: 'qwe'},
-                {message: 'qwe'},
-                {message: 'qwe'},
-                {message: 'qwe'}
-            ],
-            hints: [
-                {message: 'red', action: () => 1},
-                {message: 'Помощь', action: () => 1},
-                {message: 'Обработка заказа', action: () => 1},
-                {message: 'Список оборудования', action: () => this.props.navigation.navigate('EquipmentScreen')},
-                {message: 'Доска задач', action: () => 1}
-            ]
+            data: [],
+            hints: []
         }
 
         this.renderItem = this.renderItem.bind(this)
     }
 
-    componentDidMount(): void {
+    shouldComponentUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any): boolean {
+        if (nextState.lastMessage !== this.state.lastMessage) {
+            this.sendMessage('Я Вас плохо понял, спросите что-нибудь другое')
+        }
+        return true
     }
 
     render() {
@@ -87,23 +72,31 @@ class LoadingContainer extends React.Component {
                           data={this.state.hints}
                             contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}
                             renderItem={({item, index}) => (
-                                <TouchableOpacity key={index} style={styles.hint} onPress={item.action}>
+                                <TouchableOpacity key={index} style={styles.hint} onPress={() => item.action(this.props.navigation, this.sendMessage)}>
                                     <Text style={{color: '#FFFFFF', fontSize: 16, fontWeight: '600'}}>{item.message}</Text>
                                 </TouchableOpacity>
                             )}/>
                 <View style={styles.footer}>
-                    <TextInput onChangeText={text => this.setState({message: text})}
+                    <TextInput onChangeText={text => {
+                        let x = findNarrows(text)
+                        this.setState({message: text, hints: x})
+                    }}
                                ref={ref => this.input = ref}
                                style={styles.input}/>
                     <TouchableOpacity style={{flex: 1}} onPress={() => {
                         this.input.clear()
-                        this.setState({data: [{message: this.state.message, sender: 'user', time: moment()}, ...this.state.data]})
+                        this.setState({data: [{message: this.state.message, sender: 'user', time: moment()}, ...this.state.data]},
+                            () => setTimeout(() => this.setState({lastMessage: this.state.message}), 500))
                     }}>
                         <Icon name={'direction'} size={25}/>
                     </TouchableOpacity>
                 </View>
             </LinearGradient>
         )
+    }
+
+    sendMessage(message) {
+        this.setState({data: [{message: message, sender: 'bot', time: moment()}, ...this.state.data]})
     }
 
     renderItem = ({item, index, separators}) => {

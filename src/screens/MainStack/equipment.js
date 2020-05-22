@@ -3,7 +3,7 @@ import {FlatList, StyleSheet, TouchableOpacity, View, Text} from "react-native"
 import {connect} from "react-redux";
 import LinearGradient from "react-native-linear-gradient";
 import {DARK_PRIMARY_COLOR, PRIMARY_COLOR} from "../../constants/colors";
-import {getProfile, postLogin, getEquipment} from "../../redux/actions";
+import {getEquipment, setData} from "../../redux/actions";
 import Icon from "react-native-vector-icons/Entypo";
 
 const mapStateToProps = state => ({
@@ -12,7 +12,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    login: (login, password) => dispatch(postLogin(login, password)),
+    setData: (data) => dispatch(setData(data)),
     getEquipment: () => dispatch(getEquipment())
 });
 
@@ -33,12 +33,6 @@ class EquipmentScreen extends React.Component {
     render() {
         return (
             <LinearGradient colors={['#272727', '#272727']} style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <View style={styles.header}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={{flex: 1}}>
-                        <Icon name={'chevron-left'} color={'#ffffff'} size={29}/>
-                    </TouchableOpacity>
-                    <View style={{flex: 6}}/>
-                </View>
                 <FlatList data={this.props.equipment}
                           style={{
                               paddingTop: 60,
@@ -57,11 +51,21 @@ class EquipmentScreen extends React.Component {
                                 ${item.price}
                             </Text>
                         </View>
-                        <TouchableOpacity style={styles.round} onPress={() => this.props.navigation.navigate('IncidentScreen')}>
+                        <TouchableOpacity style={styles.round} onPress={() => {
+                            this.props.setData({operative_id: item.id})
+                            this.props.navigation.navigate('IncidentScreen')
+                        }}>
                             <Text style={{fontSize: 50}}>+</Text>
                         </TouchableOpacity>
                     </View>
                 )}/>
+
+                <View style={styles.header}>
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={{flex: 1}}>
+                        <Icon name={'chevron-left'} color={'#ffffff'} size={32}/>
+                    </TouchableOpacity>
+                    <View style={{flex: 6}}/>
+                </View>
             </LinearGradient>
         )
     }

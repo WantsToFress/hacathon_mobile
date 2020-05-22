@@ -23,6 +23,7 @@ class LoadingContainer extends React.Component {
     }
 
     componentDidMount(): void {
+        //this.props.navigation.navigate('MainStack', {screen: 'IncidentScreen'})
         if (!this.props.auth || !this.props.auth.token) {
             this.props.navigation.replace('LoginStack')
         } else {

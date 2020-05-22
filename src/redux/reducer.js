@@ -20,7 +20,7 @@ const RootReducer = createReducer(initState, {
         return mergeRight(state, {error: action.payload})
     },
     [actions.getProfile.toString() + '_FULFILLED']: (state, action) => {
-        return mergeAll([state, mergeRight(state.auth, action.payload), {update: !state.update}])
+        return mergeRight(state, {auth: mergeRight(state.auth, action.payload), update: !state.update})
     },
     [actions.getProfile.toString() + '_REJECTED']: (state, action) => {
         return mergeRight(state, {error: action.payload})
@@ -29,6 +29,18 @@ const RootReducer = createReducer(initState, {
         return mergeRight(state, {equipment: action.payload.equipment})
     },
     [actions.getEquipment.toString() + '_REJECTED']: (state, action) => {
+        return mergeRight(state, {error: action.payload})
+    },
+    [actions.getIncidents.toString() + '_FULFILLED']: (state, action) => {
+        return mergeRight(state, {incidents: action.payload.incidents})
+    },
+    [actions.getIncidents.toString() + '_REJECTED']: (state, action) => {
+        return mergeRight(state, {error: action.payload})
+    },
+    [actions.sendIncidentEquipment.toString() + '_REJECTED']: (state, action) => {
+        return mergeRight(state, {error: action.payload})
+    },
+    [actions.sendIncident.toString() + '_REJECTED']: (state, action) => {
         return mergeRight(state, {error: action.payload})
     },
 });

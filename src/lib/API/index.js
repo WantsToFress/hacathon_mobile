@@ -63,7 +63,7 @@ const createUrl = (endpoint, args) => {
         queryString = `?${query.join('&')}`;
     }
     /* Trim right slash if needed */
-    return `${API_URL}${trimSlash(endpoint)}${(queryString ? '/' : '') + queryString}`;
+    return `${API_URL}${trimSlash(endpoint)}${queryString}`;
 }
 
 const handleRefresh = async () => {
@@ -159,4 +159,16 @@ export const getEquipment = () => {
 
 export const getI = () => {
     return call('GET', '/i/', null, null)
+}
+
+export const incidentEquipment = (data) => {
+    return call('POST', '/incident/equipment', null, data)
+}
+
+export const incidentCreate = (data) => {
+    return call('POST', '/incident/maintenance', null, data)
+}
+
+export const incidents = (data) => {
+    return call('GET', '/incidents', data, null)
 }
