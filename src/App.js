@@ -41,7 +41,7 @@ class App extends React.Component {
         return (
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
-                    {connect(mapStateToProps)(AppContainer)}
+                    <AppContainer/>
                 </PersistGate>
             </Provider>
         )

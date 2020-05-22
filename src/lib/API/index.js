@@ -37,7 +37,7 @@ const getHeaders = () => {
     let token = Storage.getStateData('auth').token;
     let locale = Storage.getStateData('locale');
     if (!!token) {
-        headers.append('X-AUTH-TOKEN', token);
+        headers.append('Authorization', token);
     }
     if (!!locale) {
         headers.append('Accept-Language', locale);
@@ -67,10 +67,10 @@ const createUrl = (endpoint, args) => {
 }
 
 const handleRefresh = async () => {
-    let auth = await authorize(undefinedObject('login', Storage.getStateData('auth')),
+    let auth = await login(undefinedObject('login', Storage.getStateData('auth')),
                                 undefinedObject('password', Storage.getStateData('auth')));
     if (auth) {
-        await Storage.setStateData('auth', {})
+        await Storage.setStateData('auth', Object.assign(Storage.getStateData('auth'), {token: auth.token}))
     } else {
         await Storage.setStateData('auth', {})
     }
@@ -143,22 +143,20 @@ const call = (method, endpoint, args, data, headers=null) => {
     })
 }
 
-export const authorize = (phone, id) => {
-    return call('POST', '/v1/auth/refresh_token/', null, {phone: phone, id: id});
-}
-
 export const register = (login, full_name, password, email) => {
+    Storage.setStateData({auth: {login, full_name, password, email}})
     return call('POST', '/register/', null, {login, full_name, password, email});
 }
 
 export const login = (login, password) => {
+    Storage.setStateData({auth: {login, password}})
     return call('POST', '/login/', null, {login, password});
 }
 
 export const getEquipment = () => {
-    call('GET', '/equipment', null, null).then(res => alert(JSON.stringify(res)))
+    return call('GET', '/equipment', null, null)
 }
 
 export const getI = () => {
-    call('GET', '/i/', null, null).then(res => alert(JSON.stringify(res)))
+    return call('GET', '/i/', null, null)
 }

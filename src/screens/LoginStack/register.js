@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import LinearGradient from "react-native-linear-gradient";
 import {DARK_PRIMARY_COLOR, PRIMARY_COLOR} from "../../constants/colors";
 import Icon from 'react-native-vector-icons/Entypo'
-import {postRegister} from "../../redux/actions";
+import {getProfile, postRegister} from "../../redux/actions";
 
 const mapStateToProps = state => ({
     //auth: state.auth
@@ -12,6 +12,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     register: (login, full_name, password, email) => dispatch(postRegister(login, full_name, password, email)),
+    getProfile: () => dispatch(getProfile())
 });
 
 class RegisterScreen extends React.Component {
@@ -32,6 +33,15 @@ class RegisterScreen extends React.Component {
     }
 
     componentDidMount(): void {
+    }
+
+    shouldComponentUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any): boolean {
+        if (nextProps !== this.props && nextProps.auth && nextProps.auth.token)
+            this.props.getProfile()
+        if (nextProps !== this.props && nextProps.login)
+            this.props.navigation.replace('MainStack')
+
+        return true
     }
 
     render() {

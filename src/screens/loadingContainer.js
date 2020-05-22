@@ -4,17 +4,15 @@ import {connect} from "react-redux";
 import NetInfo from "@react-native-community/netinfo";
 import LinearGradient from "react-native-linear-gradient";
 import {DARK_PRIMARY_COLOR, PRIMARY_COLOR} from "../constants/colors";
-import {getEquipment, getI, register} from "../lib/API";
+import {getProfile} from "../redux/actions";
 
 const mapStateToProps = state => ({
-    //auth: state.auth
+    auth: state.auth,
+    update: state.update
 });
 
 const mapDispatchToProps = dispatch => ({
-    getI: async (callback) => {
-        await dispatch(getI())
-        await callback()
-    }
+    getProfile: () => dispatch(getProfile())
 });
 
 class LoadingContainer extends React.Component {
@@ -25,13 +23,18 @@ class LoadingContainer extends React.Component {
     }
 
     componentDidMount(): void {
-        if (!this.props.auth || !this.props.auth.login) {
+        if (!this.props.auth || !this.props.auth.token) {
             this.props.navigation.replace('LoginStack')
         } else {
-            this.props.getI(() => {
-                this.props.navigation.replace('MainStack')
-            })
+            this.props.getProfile()
         }
+    }
+
+    shouldComponentUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any): boolean {
+        if (nextProps.update !== this.props.update && !!nextProps.auth)
+            this.props.navigation.replace('MainStack')
+
+        return true
     }
 
     handleConnectivityChange(connectionInfo) {
