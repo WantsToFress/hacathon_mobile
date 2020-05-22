@@ -8,9 +8,15 @@ const RootReducer = createReducer(initState, {
         return mergeRight(state, action.payload)
     },
     [actions.postRegister.toString() + '_FULFILLED']: (state, action) => {
-        return mergeRight(state, {auth: {token: action.payload.data}})
+        return mergeRight(state, {auth: {token: action.payload.token}})
     },
     [actions.postRegister.toString() + '_REJECTED']: (state, action) => {
+        return mergeRight(state, {error: action.payload})
+    },
+    [actions.postLogin.toString() + '_FULFILLED']: (state, action) => {
+        return mergeRight(state, {auth: {token: action.payload.token}})
+    },
+    [actions.postLogin.toString() + '_REJECTED']: (state, action) => {
         return mergeRight(state, {error: action.payload})
     },
 });

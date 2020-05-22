@@ -11,10 +11,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    /*getUserProfile: async (id, callback) => {
-        await dispatch(getUserProfileAndForward(id));
-    },
-    setData: (data) => dispatch(setData(data)),*/
+    getI: async (callback) => {
+        await dispatch(getI())
+        await callback()
+    }
 });
 
 class LoadingContainer extends React.Component {
@@ -25,16 +25,13 @@ class LoadingContainer extends React.Component {
     }
 
     componentDidMount(): void {
-       /* if (!this.props.auth || !this.props.auth.user || !this.props.auth.user.id) {
-            this.props.navigation.navigate('LoginStack', {screen: 'logIn'})
+        if (!this.props.auth || !this.props.auth.login) {
+            this.props.navigation.replace('LoginStack')
         } else {
-            this.props.getUserProfile(this.props.auth.user.id, () => {
-                this.props.navigation.navigate('MainStack', {screen: ''})
+            this.props.getI(() => {
+                this.props.navigation.replace('MainStack')
             })
-        }*/
-        setTimeout(() => this.props.navigation.replace('LoginStack'), 1500)
-        //getEquipment()
-        //register('Kodonomo', 'Koko donomo', '123456Q', 'kukareku@mail.ru')
+        }
     }
 
     handleConnectivityChange(connectionInfo) {

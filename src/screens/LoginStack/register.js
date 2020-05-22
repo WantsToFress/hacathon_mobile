@@ -19,11 +19,13 @@ class RegisterScreen extends React.Component {
         super();
 
         this.state = {
-            fio: '',
+            full_name: '',
             login: '',
             password: '',
             repeat_password: '',
-            email: ''
+            email: '',
+            visibleError: false,
+            textError: ''
         }
 
         this.register = this.register.bind(this)
@@ -53,6 +55,7 @@ class RegisterScreen extends React.Component {
                            secureTextEntry={true}/>
                 <TextInput onChangeText={(text) => this.setState({email: text})}
                            placeholder={'Email'} style={styles.input}/>
+                {this.state.visibleError && <Text style={[styles.small_text, {color: '#ED5565'}]}>{this.state.textError}</Text>}
                 <View style={{flexDirection: 'row', width: '60%', marginTop: 20}}>
                     <TouchableOpacity style={[styles.login]} onPress={this.register}>
                         <Text style={styles.small_text}>Register</Text>
@@ -63,7 +66,13 @@ class RegisterScreen extends React.Component {
     }
 
     register() {
-        if (!!this.state.fio && !!this.state.login && !!this.state.email && !!this.state.password && this.state.password === this.state.repeat_password) {
+        if (!this.state.full_name || !this.state.login || !this.state.email || !this.state.password) {
+            this.setState({visibleError: true, textError: 'Write all data'})
+            setTimeout(() => this.setState({visibleError: false}), 5000)
+        } else if (this.state.password !== this.state.repeat_password) {
+            this.setState({visibleError: true, textError: 'Passwords must be equal'})
+            setTimeout(() => this.setState({visibleError: false}), 5000)
+        } else {
             this.props.register(this.state.login, this.state.full_name, this.state.password, this.state.email)
         }
     }

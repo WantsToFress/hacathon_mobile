@@ -67,11 +67,12 @@ const createUrl = (endpoint, args) => {
 }
 
 const handleRefresh = async () => {
-    let auth = await authorize(undefinedObject('phone', Storage.getStateData('auth')),
-                                undefinedObject('user.id', Storage.getStateData('auth')));
-
+    let auth = await authorize(undefinedObject('login', Storage.getStateData('auth')),
+                                undefinedObject('password', Storage.getStateData('auth')));
     if (auth) {
-        await Storage.setStateData('auth', Object.assign(Storage.getStateData('auth'), {token: auth.data.token}))
+        await Storage.setStateData('auth', {})
+    } else {
+        await Storage.setStateData('auth', {})
     }
 }
 
@@ -80,7 +81,7 @@ const call = (method, endpoint, args, data, headers=null) => {
 
     let body = data;
     if ((data !== null && typeof data === 'object' && !data.hasOwnProperty('_parts')) || Array.isArray(data)) {
-        body = JSON.stringify({data: data});
+        body = JSON.stringify(data);
     }
 
     let options = {
@@ -91,6 +92,8 @@ const call = (method, endpoint, args, data, headers=null) => {
 
     const url = createUrl(endpoint, args);
     let error;
+
+    console.log(options)
 
     return fetch(url, options).then(async response => {
         console.log(method, endpoint, response);
@@ -146,6 +149,10 @@ export const authorize = (phone, id) => {
 
 export const register = (login, full_name, password, email) => {
     return call('POST', '/register/', null, {login, full_name, password, email});
+}
+
+export const login = (login, password) => {
+    return call('POST', '/login/', null, {login, password});
 }
 
 export const getEquipment = () => {

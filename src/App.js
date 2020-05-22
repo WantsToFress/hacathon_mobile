@@ -20,7 +20,7 @@ class AppContainer extends React.Component {
                         <Stack.Screen name="LoadingContainer" component={LoadingContainer}
                                       options={{headerShown: false}}/>
                         <Stack.Screen name="LoginStack" component={LoginStack}
-                                        options={{headerShown: false}}/>
+                                      options={{headerShown: false}}/>
                         <Stack.Screen name="MainStack" component={MainStack}
                                       options={{headerShown: false}}/>
                     </Stack.Navigator>
@@ -29,6 +29,11 @@ class AppContainer extends React.Component {
         );
     }
 }
+
+const mapStateToProps = state => ({
+    auth: state.auth
+})
+
 console.disableYellowBox = false;
 
 class App extends React.Component {
@@ -36,7 +41,7 @@ class App extends React.Component {
         return (
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
-                    <AppContainer/>
+                    {connect(mapStateToProps)(AppContainer)}
                 </PersistGate>
             </Provider>
         )
